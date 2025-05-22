@@ -6,11 +6,9 @@ import { toggleSidebar, setSidebarclose } from '../../redux/slices/sidebarSlice'
 import { MENU_LISTS, routes } from '../../constants/menuList'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 const Sidebar = () => {
+  const [currentMenu, setCurrentMenu] = useState(0);
   const isSidebarOpen = useSelector((state) => state.sidebar.isSidebarOpen);
   const dispatch = useDispatch();
-
-  const [currentMenu, setCurrentMenu] = useState(0);
-
   const slecteMenuHandler = (index) => {
     setCurrentMenu(index);
   }
@@ -63,12 +61,9 @@ const Sidebar = () => {
                     onClick={()=>slecteMenuHandler(index)}
                     className={`menu-link 
                     flex items-center py-0.5 px-5 font-medium gap-x-[14px] h-[44px]
-                    ${currentMenu===index ? 'bg-blue-700 text-white rounded-sm' : ''}
-                    `}>
-                      <span className={
-                        `menu-icon w-5
-                        ${currentMenu===index ? 'invert-[1] brightness-[100%]' : ''}
-                        `
+                    ${currentMenu===index ? 'bg-blue-700 text-white rounded-sm' : ''}`}>
+                      <span className={`menu-icon w-5
+                        ${currentMenu===index ? 'invert-[1] brightness-[100%]' : ''}`
                       }>
                         <img src={menu.icon} alt={menu.alt} />
                       </span>

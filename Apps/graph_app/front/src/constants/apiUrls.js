@@ -1,5 +1,11 @@
 const DOMAIN = "http://localhost:8000";
 
+const COUNTRIES_API_URL =
+  'https://restcountries.com/v3.1/all?fields=name,flags,languages';
+
+
+
+
 const routes = [
   'sales_map',
   'visitors',
@@ -26,4 +32,5 @@ export {
   GET_VOLUME_SERVICES_API_URL,
   GET_TOP_PRODUCTS_API_URL,
   GET_REVENUE_API_URL,
+  COUNTRIES_API_URL,
 };
