@@ -1,12 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TaskList from './TaskList'
 import { useSelector, useDispatch } from 'react-redux'
-import { addTask, completeTask, deleteTask } from '../app/toDoTask'
+import { addTask, completeTask, deleteTask, updateTasks } from '../app/toDoTask'
 import Task from './Task'
+import axios from 'axios'
+
 const TodoPage = () => {
   const dispatch = useDispatch()
   const tasks = useSelector((state) => state.tasks.value)
   const [input, setInput] = useState("")
+
+  useEffect(()=>{
+    const getTasks = async()=>{
+      const res = await axios.get("http://localhost:8000/tasks")
+      dispatch(updateTasks(res.data))
+    }
+    getTasks()
+  },[]);
 
   const completeTaskAction = (id) => {
     return dispatch(completeTask(id))
@@ -14,7 +24,6 @@ const TodoPage = () => {
   const deleteTaskAction = (id) => {
     return dispatch(deleteTask(id))
   }
-
 
   const handleInputChange = (e) => {
     setInput(e.target.value)
@@ -33,9 +42,17 @@ const TodoPage = () => {
       description: "New Description",
       completed: false
     }))
+    testPost(input, "New Description", false);
     setInput("")
   }
 
+  const testPost = async(title, description, completed)=>{
+    const response = await axios.post("http://localhost:8000/test", {
+      title: title,
+      description: description,
+      completed: completed
+    })
+  }
 
   return (
     <div className='container px-5'>
