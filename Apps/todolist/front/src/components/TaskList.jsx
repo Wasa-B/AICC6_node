@@ -6,7 +6,7 @@ const TaskList = ({tasks, template , completeTask, deleteTask}) => {
     <div>
       <h1>Task List</h1>
       {tasks.map((task, idx) => (
-        <Task key={idx} id={idx} task={task} completeTask={completeTask} deleteTask={deleteTask} />
+        <Task key={idx} id={task.id} task={task} completeTask={completeTask} deleteTask={deleteTask} />
       ))}
     </div>
   )

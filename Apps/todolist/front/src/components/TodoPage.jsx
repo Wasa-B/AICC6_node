@@ -1,57 +1,54 @@
 import React, { useEffect, useState } from 'react'
 import TaskList from './TaskList'
-import { useSelector, useDispatch } from 'react-redux'
-import { addTask, completeTask, deleteTask, updateTasks } from '../app/toDoTask'
 import Task from './Task'
-import axios from 'axios'
+import { fetchTasks, addTask } from '../app/apiSlice';
+import { useDispatch, useSelector } from 'react-redux';
+
+
 
 const TodoPage = () => {
-  const dispatch = useDispatch()
-  const tasks = useSelector((state) => state.tasks.value)
-  const [input, setInput] = useState("")
-
-  useEffect(()=>{
-    const getTasks = async()=>{
-      const res = await axios.get("http://localhost:8000/tasks")
-      dispatch(updateTasks(res.data))
-    }
-    getTasks()
-  },[]);
-
-  const completeTaskAction = (id) => {
-    return dispatch(completeTask(id))
-  }
-  const deleteTaskAction = (id) => {
-    return dispatch(deleteTask(id))
-  }
+  const [input, setInput] = useState('');
+  const tasks = useSelector((state) => state.tasks.tasks);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchTasks());
+  }, [dispatch]);
 
   const handleInputChange = (e) => {
-    setInput(e.target.value)
-  }
+    setInput(e.target.value);
+  };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      handleAddTask()
+    if (e.key === 'Enter') {
+      addTaskAction(input);
+      setInput('');
     }
   }
 
   const handleAddTask = () => {
-    if (input.trim() === "") return
-    dispatch(addTask({
-      title: input,
-      description: "New Description",
-      completed: false
-    }))
-    testPost(input, "New Description", false);
-    setInput("")
+    addTaskAction(input);
+    setInput('');
   }
 
-  const testPost = async(title, description, completed)=>{
-    const response = await axios.post("http://localhost:8000/test", {
+  const addTaskAction = (title) => {
+    if (title.trim() === '') {
+      return;
+    }
+    const newTask = {
       title: title,
-      description: description,
-      completed: completed
-    })
+      description: '',
+      completed: false,
+    }
+    dispatch(addTask(newTask));
+  }
+
+  const completeTaskAction = (id) => {
+    // dispatch(completeTask(id));
+  }
+
+  const deleteTaskAction = (id) => {
+    console.log(id);
+    // dispatch(deleteTask(id));
   }
 
   return (
