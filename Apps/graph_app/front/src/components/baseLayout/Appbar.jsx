@@ -4,11 +4,12 @@ import { useDispatch } from 'react-redux'
 import { setSidebaropen } from '../../redux/slices/sidebarSlice'
 import AppbarLang from './AppbarLang'
 import { Icons } from '../../assets/icons'
+import AppbarProfile from './AppbarProfile'
 const Appbar = () => {
   const dispatch = useDispatch();
   return (
     <div className='appbar-wrapper lg:ml-[calc(20%+14px)] 
-    lg:w-[calc(80%-28px)] w-full bg-gray-950 py-3 px-6 
+    lg:w-[calc(80%-28px)] w-full overflow-hidden bg-gray-950 py-3 px-6 
     rounded-sm shadow-[0_0_0.25rem_rgba(255,255,255,0.3)]
     text-gray-300
     '>
@@ -17,12 +18,12 @@ const Appbar = () => {
           <button onClick={()=>dispatch(setSidebaropen())} className='lg:hidden'>
             <MdOutlineMenu />
           </button>
-          <h3 className='appbar-title text-xl font-semibold'>Dashboard</h3>
+          <h3 className='appbar-title text-xl font-semibold hidden sm:block'>Dashboard</h3>
         </div>
         <div className='appbar-right flex items-center gap-4'>
           <div className="appbar-search">
             <form action="" className='input-group flex items-center bg-gray-700
-            lg:h-11 h-9 min-w-20 
+            lg:h-11 h-9 min-w-40 
             lg:min-w-80 sm:min-w-60 
             lg:py-1 py-0 lg:px-3 px-2
             rounded-xl
@@ -37,8 +38,11 @@ const Appbar = () => {
             </form>
           </div>
           <AppbarLang/>
-          <button className="notification"></button>
-          
+          <button className="notification relative block rounded-md w-8 h-8">
+            <img src={Icons.NotificationOrange} alt="" className='w-6'/>
+            <span className='w-2 h-2 bg-red-600 rounded-full absolute top-1 right-2'></span>
+          </button>
+          <AppbarProfile/>
         </div>
       </div>
     </div>

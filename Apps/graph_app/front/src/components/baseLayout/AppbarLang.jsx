@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { COUNTRIES_API_URL } from '../../constants/apiUrls';
-import { RiArrowDropDownLine } from "react-icons/ri";
 import { Icons } from '../../assets/icons';
-
-
 
 const AppbarLang = () => {
   const [countries, setCountries] = useState([]);
@@ -71,7 +68,7 @@ const AppbarLang = () => {
   }
 
   return (
-    <div className='relative w-30 h-10 flex items-center'>
+    <div className='relative  h-10 flex items-center'>
       <div onClick={handleDropListEnable} 
         className='drop-selected cursor-pointer flex items-center gap-x-2'>
         <div className="drop-selected-img w-6 h-6 overflow-hidden rounded-full 
@@ -81,7 +78,7 @@ const AppbarLang = () => {
           <img src={currentFlag(selectCountryIdx)} alt="" className='w-full h-full object-cover'/>
         </div>
         <div className="drop-selected-text flex items-center gap-2">
-          <span className='uppercase font-medium'>{currentLangKey(selectCountryIdx)}</span>
+          <span className='uppercase font-medium hidden sm:block'>{currentLangKey(selectCountryIdx)}</span>
           <img src={Icons.ChevronDownDark} alt="" className="invert-[1]" />
         </div>
       </div>

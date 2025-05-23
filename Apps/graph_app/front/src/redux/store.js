@@ -2,11 +2,13 @@
 // configureStore: 스토어를 생성하는 함수
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import sidebarReducer from "./slices/sidebarSlice";
+import apiSlice from "./slices/apiSlice";
 const store = configureStore(
   {
     reducer: combineReducers(
       {
         sidebar: sidebarReducer,
+        apis: apiSlice,
       }
     )
   }
