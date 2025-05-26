@@ -61,7 +61,7 @@ const Revenue = () => {
   useEffect(()=>{
     dispatch(fetchRevenue());
   },[dispatch]);
-  console.log(state);
+  // console.log(state);
   return (
     <div className='block-wrap'>
       <HeadTitle title='Total Revenue'/>

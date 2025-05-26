@@ -85,17 +85,18 @@ const TargetReality = () => {
         {
         TARGET_REALITY_LISTS.map((item,index)=>(
           <div key={index} className='flex justify-between items-center gap-2'>
-            <div className='info-item-left flex items-center gap-2'>
-              <div className='w-10 h-10 rounded-sm bg-white flex items-center justify-center'>
-                <img src={item.icon} alt={item.title} className='w-6 h-6'/>
+            <div className='info-item-left flex items-center gap-2.5'>
+              <div className={`info-item-icon w-10 h-10 rounded-sm bg-white flex items-center justify-center
+                ${index ===0? 'bg-[#e2fff3]' : 'bg-[#fff4de]'}`}>
+                <img src={item.icon} alt={item.title} className='w-6'/>
               </div>
               <div>
-                <h4 className=' text-gray-300'>{item.title}</h4>
-                <p className='text-sm text-gray-500'>{item.subtitle}</p>
+                <h4 className='text-xs text-gray-300'>{item.title}</h4>
+                <p className='text-[10px] text-gray-500'>{item.subtitle}</p>
               </div>
             </div>
             <div className='info-item-right'>
-              <span className='text text-gray-200'>{item.value}</span>
+              <span className='text font-semibold text-gray-300'>{item.value}</span>
             </div>
           </div>
         ))

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import { GET_CUSTOMERS_API_URL, GET_REVENUE_API_URL, GET_TARGET_REALITY_API_URL, GET_VISITORS_API_URL} from "../../constants/apiUrls";
+import { GET_CUSTOMERS_API_URL, GET_REVENUE_API_URL, GET_SALES_MAP_API_URL, GET_TARGET_REALITY_API_URL, GET_TOP_PRODUCTS_API_URL, GET_VISITORS_API_URL, GET_VOLUME_SERVICES_API_URL} from "../../constants/apiUrls";
 import { getRequest } from "../../constants/methods";
 
 // reducers와 extraReducers의 차이를 간단히 말하자면, 슬라이스를 정의할 때 reducers는 슬라이스의 상태를 어떻게 업데이트할지에 대한 로직을 정의하는 반면 extraReducers는 외부에서 생성된 액션에 대한 리듀서 로직을 정의한다는 것이다.
@@ -40,6 +40,18 @@ export const fetchTargetReality = createFetchThunk(
   GET_TARGET_REALITY_API_URL,
 )
 
+export const fetchTopProducts = createFetchThunk(
+  'fetchTopProduct', GET_TOP_PRODUCTS_API_URL,
+)
+
+export const fetchSalesMap = createFetchThunk(
+  'fetchSalesMap', GET_SALES_MAP_API_URL
+)
+
+export const fetchVolumeServices = createFetchThunk(
+  'fetchVolumeServices', GET_VOLUME_SERVICES_API_URL
+)
+
 //요청 성공시 상태 업데이트
 const handleFulfilled = (stateKey) => (state, action) => {
   state[stateKey] = action.payload;
@@ -59,6 +71,9 @@ const apiSlice = createSlice({
     revenueData: null,
     customersData: null,
     targetRealityData: null,
+    topProducts: null,
+    salesMap: null,
+    volumeServices: null
   },
   extraReducers: (builder) => {
     builder
@@ -69,7 +84,13 @@ const apiSlice = createSlice({
     .addCase(fetchCustomers.fulfilled, handleFulfilled("customersData"))
     .addCase(fetchCustomers.rejected, handleRejected)
     .addCase(fetchTargetReality.fulfilled, handleFulfilled("targetRealityData"))
-    .addCase(fetchTargetReality.rejected, handleRejected);
+    .addCase(fetchTargetReality.rejected, handleRejected)
+    .addCase(fetchTopProducts.fulfilled, handleFulfilled("topProducts"))
+    .addCase(fetchTopProducts.rejected, handleRejected)
+    .addCase(fetchSalesMap.fulfilled, handleFulfilled("salesMap"))
+    .addCase(fetchSalesMap.rejected, handleRejected)
+    .addCase(fetchVolumeServices.fulfilled, handleFulfilled("volumeServices"))
+    .addCase(fetchVolumeServices.rejected, handleRejected)
   },
 });
 
