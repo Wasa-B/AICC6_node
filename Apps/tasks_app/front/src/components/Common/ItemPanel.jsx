@@ -1,8 +1,38 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Item from './Item';
+import { useDispatch, useSelector } from 'react-redux';
+import AddItem from './AddItem';
+import PageTitle from './PageTitle';
+import { fetchGetItems } from '../../redux/slices/apiSlice';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import LoadingSkeleton from './LoadingSkeleton';
 
 const ItemPanel = ({pageTitle}) => {
-  const userKey = true;
+  const [isLoading, setIsLoading] = useState(true);
+  // Auth Data Variable
+  const authData = useSelector((state) => state.auth.authData);
+  const userKey = authData?.sub;
+
+  // API Data Variable
+  const getItemsData = useSelector((state) => state.api.getItemsData);
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    if(!userKey)return;
+    // dispatch(fetchGetItems(userKey));
+    // useEffect 내부에서 dispatch 함수를 호출할 때는 async/await를 사용할 수 없을때 unwrap()을 사용;
+    const fetchGetItemsData = async ()=>{
+      try {
+        const response = await dispatch(fetchGetItems(userKey)).unwrap();
+      } catch (error) {
+        
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchGetItemsData();
+  },[]);
+
+  // console.log(getItemsData);
   return (
     <div className='panel bg-[#212121] w-[80%] rounded-lg border border-gray-500 py-5 px-4
     flex flex-col gap-4 overflow-y-auto
@@ -10,33 +40,34 @@ const ItemPanel = ({pageTitle}) => {
       {
         userKey
         ? (
-          <>
-            <div className="title-wrapper rounded-lg border border-gray-500 py-2 px-2">
-              <h2>{pageTitle}</h2>
-            </div>
+          <div className='login-message w-full h-full'>
+            <PageTitle title={pageTitle} />
             <div className="items-wrapper
             w-full h-auto flex flex-wrap justify-start items-start">
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
+                {
+                  isLoading
+                  ?(
+                    <SkeletonTheme baseColor="#202020" highlightColor="#444">
+                      {Array.from({length: 5}).map((_, idx)=>(
+                        <LoadingSkeleton key={idx}/>
+                      ))}
+                    </SkeletonTheme>
+                  )
+                  :(
+                    <>
+                    {
+                      getItemsData?.map((task, idx)=>(
+                        <Item key={idx} task={task}/>
+                      ))
+                    }
+                    <AddItem />
+                    </>
+                  )
+                }
                 <div className="add-item">
               </div>
             </div>
-          </>
+          </div>
         )
         :(
           <div className="login-message w-full h-full flex items-center justify-center">
