@@ -5,7 +5,10 @@ const index = () => {
   return (
     <div className='page-section'>
       <NavBar/>
-      <ItemPanel pageTitle="Completed Items"/>
+      <ItemPanel 
+        pageTitle="Completed Items" 
+        itemFilter={(item)=>item.iscompleted}
+      />
     </div>
   )
 }

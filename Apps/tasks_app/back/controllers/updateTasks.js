@@ -8,12 +8,11 @@ exports.updateCompleted = async (req, res) => {
       "UPDATE tasks SET isCompleted = $1 WHERE _id = $2",
       [isCompleted, itemId]
     );
-    res.status(201).json({message: "Task updated successfully"});
+    res.status(200).json({message: "Task updated successfully"});
   } catch (error) {
     res.status(500).json({error: "Update Task Failed" + error.message});
   }
 }
-
 exports.updateImportant = async (req, res) => {
   const {itemId, isImportant} = req.body;
   try {

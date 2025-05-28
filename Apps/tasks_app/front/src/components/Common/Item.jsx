@@ -1,9 +1,49 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { MdEditDocument } from 'react-icons/md'
 import { FaTrash } from 'react-icons/fa'
-
+import { useDispatch } from 'react-redux';
+import { fetchUpdateCompleted, fetchGetItems } from '../../redux/slices/apiSlice';
+import { toast } from 'react-toastify';
 const Item = ({task}) => {
-  const {_id, title, description, date, iscompleted, isimportant, userid} = task;
+  const { _id, title, description, date, iscompleted, isimportant, userid } =
+    task;
+  const dispatch = useDispatch();
+
+  const [isCompleted, setIsCompleted] = useState(iscompleted);
+
+  const changeCompleted = async () => {
+    // setIsCompleted(!isCompleted)을 호출하면 상태 업데이트가 비동기적으로 이루어지기 때문에, isCompleted의 값이 즉시 변경되지 않는다.
+    // 따라서 updateCompletedData 객체를 생성할 때 isCompleted의 이전 값이 사용된다. 이로 인해 true/false가 한 단계씩 밀리게 된다.
+
+    // 상태를 미리 업데이트 하여 반영된 값을 사용
+    const newIsCompleted = !isCompleted;
+    setIsCompleted(newIsCompleted);
+
+    const updateCompletedKeys = {
+      itemId: _id,
+      isCompleted: newIsCompleted,
+    };
+
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updateCompletedKeys),
+    };
+
+    try {
+      await dispatch(fetchUpdateCompleted(options)).unwrap();
+      newIsCompleted
+        ?toast.success("할 일을 완료 했습니다.")
+        :toast.info("할 일이 진행 중 입니다.")
+      
+      await dispatch(fetchGetItems(userid)).unwrap();
+    } catch (error) {
+      toast.error('Fail to update');
+    }
+  };
+
   const textLengthOverCut = (text, length, lastText) => {
     if(!length) length = 20;
     if(!lastText) lastText = '...';
@@ -30,9 +70,9 @@ const Item = ({task}) => {
           <div className='item-footer flex justify-between'>
             <div className='item-footer-left flex gap-2'>
               {
-                iscompleted
-                ?(<button className="item-competed block py-1 px-4 bg-lime-600 text-sm text-white rounded-md">Completed</button>)
-                :(<button className="item-competed block py-1 px-4 bg-cyan-600 text-sm text-white rounded-md">Completed</button>)
+                isCompleted
+                ?(<button className="item-competed block py-1 px-4 bg-lime-600 text-sm text-white rounded-md" onClick={changeCompleted}>Completed</button>)
+                :(<button className="item-competed block py-1 px-4 bg-cyan-600 text-sm text-white rounded-md" onClick={changeCompleted}>Incompleted</button>)
               }
               {
                 isimportant

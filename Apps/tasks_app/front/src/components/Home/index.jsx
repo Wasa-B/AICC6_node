@@ -5,7 +5,9 @@ const index = () => {
   return (
     <div className='page-section'>  
       <NavBar/>
-      <ItemPanel pageTitle="All Items"/>
+      <ItemPanel 
+        pageTitle="All Items" 
+      />
     </div>
   )
 }

@@ -5,6 +5,8 @@ import NavBar from "./components/Common/NavBar";
 import Important from "./components/Important";
 import Proceeding from "./components/Proceeding";
 import Completed from "./components/Completed";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
 
   return (
@@ -20,6 +22,13 @@ function App() {
             <Route path="/important" element={<Important />} />
             <Route path="/proceeding" element={<Proceeding />} />
           </Routes>
+          <ToastContainer
+            position="bottom-center"
+            autoClose={1000}
+            theme='dark'
+            hideProgressBar={true}
+            
+          />
         </div>
       </BrowserRouter>
     </div>

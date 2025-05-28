@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import AddItem from './AddItem';
 import PageTitle from './PageTitle';
 import { fetchGetItems } from '../../redux/slices/apiSlice';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import { SkeletonTheme } from 'react-loading-skeleton';
 import LoadingSkeleton from './LoadingSkeleton';
+import ItemModal from './ItemModal';
 
-const ItemPanel = ({pageTitle}) => {
+const ItemPanel = ({pageTitle, itemFilter}) => {
   const [isLoading, setIsLoading] = useState(true);
   // Auth Data Variable
   const authData = useSelector((state) => state.auth.authData);
@@ -18,19 +19,28 @@ const ItemPanel = ({pageTitle}) => {
   const dispatch = useDispatch();
   useEffect(()=>{
     if(!userKey)return;
-    // dispatch(fetchGetItems(userKey));
+    if(getItemsData != null){
+      setIsLoading(false);
+      return;
+    }
     // useEffect 내부에서 dispatch 함수를 호출할 때는 async/await를 사용할 수 없을때 unwrap()을 사용;
     const fetchGetItemsData = async ()=>{
       try {
-        const response = await dispatch(fetchGetItems(userKey)).unwrap();
+        await dispatch(fetchGetItems(userKey)).unwrap();
       } catch (error) {
-        
+        console.log(error);
       } finally {
         setIsLoading(false);
       }
     }
     fetchGetItemsData();
-  },[]);
+  },[userKey]);
+
+
+  const filterItems = ()=>{
+    if(!itemFilter) return getItemsData;
+    return getItemsData?.filter(itemFilter);
+  }
 
   // console.log(getItemsData);
   return (
@@ -56,8 +66,8 @@ const ItemPanel = ({pageTitle}) => {
                   :(
                     <>
                     {
-                      getItemsData?.map((task, idx)=>(
-                        <Item key={idx} task={task}/>
+                      filterItems()?.map((task)=>(
+                        <Item key={task._id} task={task}/>
                       ))
                     }
                     <AddItem />
@@ -79,6 +89,7 @@ const ItemPanel = ({pageTitle}) => {
           </div>
         )
       }
+      <ItemModal />
     </div>
   )
 }
