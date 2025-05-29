@@ -49,14 +49,17 @@ export async function patchRequest(url, options) {
 
 /* ====== Common Delete Request Function ====== */
 export async function deleteRequest(url, options) {
-  return await fetch(url, options).then((response) => {
+  const defaultOption ={
+    method:"DELETE",
+    ...options,
+  }
+  return await fetch(url, defaultOption).then((response) => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
     return response.json();
   });
 }
-
 
 /* ====== Common GET Request Function ====== */
 export async function getRequest(url) {

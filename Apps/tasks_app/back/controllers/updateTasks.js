@@ -29,6 +29,7 @@ exports.updateImportant = async (req, res) => {
 exports.updateTask = async (req, res) => {
   const {itemId,title, description, date, isCompleted, isImportant} = req.body;
   // console.log(_id, title, description, date, isCompleted, isImportant, userId)
+  // console.log("Update Request : ", req.body);
   try {
     await database.query(
       "UPDATE tasks SET title = $1, description = $2, date = $3, isCompleted = $4, isImportant = $5 WHERE _id = $6",

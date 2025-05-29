@@ -15,7 +15,7 @@ const NavBar = () => {
   const user = useSelector((state) => state.auth.authData);
   const dispatch = useDispatch();
   const {name} = user || {};
-  const [isAuth, setIsAuth] = useState(user ? true : false);
+  const [isAuth, setIsAuth] = useState(!!name);
 
   const handleLoginSuccess = useCallback((credentialResponse) => {
     try {
